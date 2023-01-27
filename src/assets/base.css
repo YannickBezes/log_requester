@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Open+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  --color-white: #ffffff;
+  --color-white-soft: #f8f8f8;
+  --color-white-mute: #f2f2f2;
+
+  --color-black: #181818;
+  --color-black-soft: #222222;
+  --color-black-mute: #282828;
+
+  --color-indigo: #2c3e50;
+
+  --color-divider-light-1: rgba(60, 60, 60, 0.29);
+  --color-divider-light-2: rgba(60, 60, 60, 0.12);
+  --color-divider-dark-1: rgba(84, 84, 84, 0.65);
+  --color-divider-dark-2: rgba(84, 84, 84, 0.48);
+
+  --color-text-light-1: var(--color-indigo);
+  --color-text-light-2: rgba(60, 60, 60, 0.66);
+  --color-text-dark-1: var(--color-white);
+  --color-text-dark-2: rgba(235, 235, 235, 0.64);
+
+  --color-green: hsla(160, 100%, 37%, 1);
+  --color-green-hover: hsla(160, 100%, 37%, 0.8);
+
+
+  --color-background: var(--color-black);
+  --color-background-soft: var(--color-black-soft);
+  --color-background-mute: var(--color-black-mute);
+
+  --color-border: var(--color-divider-dark-2);
+  --color-border-hover: var(--color-divider-dark-1);
+
+  --color-heading: var(--color-text-dark-1);
+  --color-text: var(--color-text-dark-2);
+
+  --border-radius: 2px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  font-weight: normal;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  color: var(--color-text);
+  background: var(--color-background);
+  transition: color 0.5s, background-color 0.5s;
+  line-height: 1.6;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3 {
+  color: var(--color-heading);
+  font-family: 'DM Sans', sans-serif;
+}

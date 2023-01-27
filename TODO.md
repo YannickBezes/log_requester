@@ -1,0 +1,11 @@
+# Features
+ - [ ] display logs in a table (json format)
+ - [ ] display logs in a table (table with column)
+ - [ ] add possibility to manage columns 
+ - [ ] add an input since
+ - [x] import a json file
+ - [ ] when we have entered a key display the possibilities (contains, equals, not equal, do not contains)
+ - [ ] parse query (/("?[\w]+"?:-?["*][\w\d]+["*]\s?)+/)
+ - [ ] Display a graph with the number of logs by timestamp
+ - [ ] Add a button to clear query
+ - [ ] Add the number of logs found

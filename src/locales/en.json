@@ -1,0 +1,10 @@
+{
+	"import-file": {
+		"title": "Import a file to query!",
+		"button": "Import"
+	},
+	"input-query": {
+		"label": "Find logs where",
+		"button": "Query logs"
+	}
+}
