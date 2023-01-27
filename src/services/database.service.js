@@ -1,4 +1,5 @@
 import { BadFormatException } from '@/exceptions/bad-format.exception';
+import { QUERY_TYPE } from '@/constants';
 
 class DatabaseService {
   constructor() {
@@ -54,6 +55,36 @@ class DatabaseService {
   searchInKeys(value) {
     const regex = new RegExp(value, 'i');
     return this.databaseKeys.filter(k => regex.test(k));
+  }
+
+  find(queries) {
+    let results = this.database;
+
+    for (const query of queries) {
+      results = results.filter(r => {
+        const keys = query.key.split('.');
+        let rValue = r;
+        keys.forEach(k => rValue = rValue[k]);
+
+        switch (query.type) {
+          case QUERY_TYPE.EQUAL:
+            return rValue === query.value;
+
+          case QUERY_TYPE.CONTAINS:
+            rValue = rValue.toString().toLowerCase();
+            return rValue.includes(query.value.toString().toLowerCase());
+
+          case QUERY_TYPE.NOT_EQUAL:
+            return rValue !== query.value;
+
+          case QUERY_TYPE.DO_NOT_CONTAINS:
+            rValue = rValue.toString().toLowerCase();
+            return !rValue.includes(query.value.toString().toLowerCase());
+        }
+      });
+    }
+
+    return results;
   }
 }
 

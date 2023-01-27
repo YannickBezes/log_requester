@@ -34,7 +34,7 @@
       </div>
     </div>
 
-    <button class="input-button">{{ t('input-query.button') }}</button>
+    <button class="input-button" @click="queryLogs">{{ t('input-query.button') }}</button>
   </div>
 </template>
 
@@ -43,6 +43,8 @@ import { useI18n } from 'vue-i18n';
 import { ref } from 'vue';
 import DatabaseService from '@/services/database.service';
 import SearchIcon from '@/components/icons/search-icon.vue';
+import { QUERY_TYPE } from '@/constants';
+import { BadFormatException } from '@/exceptions/bad-format.exception';
 const { t } = useI18n();
 
 const input = ref(null);
@@ -98,6 +100,74 @@ function onKeyUpArrowUp(e) {
   if (selectedItem.value > 0) {
     selectedItem.value--;
   }
+}
+
+function queryLogs() {
+  try {
+    // Query
+    const query = input.value.value;
+    if (query === '') {
+      throw new BadFormatException('Query is invalid');
+    }
+
+    // TODO: find a solution because we can have space in values
+    let queries = query.match(/((['"]?[\w_\-]+['"]?):(-?['"*][\w_\s\-]+['"*]))+/g);
+
+    if (queries.length === 0) {
+      throw new BadFormatException('Query is invalid');
+    }
+
+    queries = queries.map(keyValue => {
+      return parseQuery(keyValue);
+    });
+
+    console.log(DatabaseService.find(queries));
+  } catch (e) {
+    if (e instanceof BadFormatException) {
+      // TODO: display error message
+      console.log('bad format');
+    } else {
+      console.error(e);
+    }
+  }
+}
+
+function parseQuery(keyValue) {
+  const splitKeyValue= keyValue.split(':');
+
+  if (splitKeyValue.length !== 2) {
+    throw new BadFormatException('Query is invalid');
+  }
+
+  // Get key and value
+  const key = splitKeyValue[0].replace(/['"]/g, '').trim();
+  let value = splitKeyValue[1].trim();
+
+  // Check if the key and value is valid
+  if (!/^-?["'*].+['"*]$/.test(value) || !DatabaseService.databaseKeys.includes(key)) {
+    throw new BadFormatException('Query is invalid');
+  }
+
+  let type = QUERY_TYPE.EQUAL;
+
+  // If we have a '-' it's a negation
+  let not = false;
+  if (value[0] === '-') {
+    value = value.slice(1); // Remove '-'
+    not =true;
+  }
+
+  if (
+    (value[0] === '"' && value[value.length -1] === '"') ||
+    (value[0] === '\'' && value[value.length -1] === '\'')
+  ) {
+    type = not ? QUERY_TYPE.NOT_EQUAL: QUERY_TYPE.EQUAL;
+  } else if (value[0] === '*' && value[value.length -1] === '*') {
+    type = not ? QUERY_TYPE.DO_NOT_CONTAINS: QUERY_TYPE.CONTAINS;
+  }
+  value = value.slice(1, value.length -1);
+
+  return { key, value, type };
 }
 </script>
 
