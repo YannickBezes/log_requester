@@ -53,7 +53,15 @@ const selectedItem = ref(-1);
 const inputFocused = ref(false);
 
 function onSuggestionClick(suggestion) {
-  input.value.value = suggestion;
+  const existingQueries = getQueries();
+
+  if (existingQueries !== null) {
+    input.value.value = [ ...getQueries(), suggestion].join(' ');
+  } else {
+    input.value.value = suggestion;
+  }
+
+  focusInput();
   suggestions.value = [];
 }
 
@@ -81,8 +89,14 @@ function onInputChange() {
   // Reset selected item
   selectedItem.value = -1;
 
-  if (input.value.value.length >= 3) {
-    suggestions.value = DatabaseService.searchInKeys(input.value.value);
+  const queries = getQueries();
+  let currentKey = input.value.value;
+  if (queries !== null) {
+    currentKey = (input.value.value.replace(queries.join(' '), '')).trim();
+  }
+
+  if (currentKey.length >= 3) {
+    suggestions.value = DatabaseService.searchInKeys(currentKey);
   } else {
     suggestions.value = [];
   }
@@ -104,14 +118,7 @@ function onKeyUpArrowUp(e) {
 
 function queryLogs() {
   try {
-    // Query
-    const query = input.value.value;
-    if (query === '') {
-      throw new BadFormatException('Query is invalid');
-    }
-
-    // TODO: find a solution because we can have space in values
-    let queries = query.match(/((['"]?[\w_\-]+['"]?):(-?['"*][\w_\s\-]+['"*]))+/g);
+    let queries = getQueries();
 
     if (queries.length === 0) {
       throw new BadFormatException('Query is invalid');
@@ -169,6 +176,13 @@ function parseQuery(keyValue) {
 
   return { key, value, type };
 }
+
+function getQueries() {
+  // Query
+  const query = input.value.value;
+  return query.match(/((['"]?[\w_\-]+['"]?):(-?['"*][\w_\s\-]+['"*]))+/g);
+}
+
 </script>
 
 <style scoped>
