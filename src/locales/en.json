@@ -6,5 +6,8 @@
 	"input-query": {
 		"label": "Find logs where",
 		"button": "Query logs"
+	},
+	"log": {
+		"nb-logs": "{number} logs found"
 	}
 }

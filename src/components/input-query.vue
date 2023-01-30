@@ -96,6 +96,9 @@ function onInputChange() {
     currentKey = (input.value.value.replace(queries.join(' '), '')).trim();
   }
 
+  // remove special character
+  currentKey = currentKey.replace(/[*:'"]+/g, '');
+
   if (currentKey.length >= 3) {
     suggestions.value = DatabaseService.searchInKeys(currentKey);
   } else {
@@ -130,6 +133,7 @@ function queryLogs() {
     });
 
     const logRequest = userLogRequest();
+    logRequest.setLastQuery(queries.join(' '));
     logRequest.result = DatabaseService.find(queries);
   } catch (e) {
     if (e instanceof BadFormatException) {
