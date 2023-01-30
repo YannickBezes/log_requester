@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
-export const useQueryStore = defineStore('query', () => {
+export const userLogRequest = defineStore('logRequest', () => {
   const lastQuery = ref(null);
+  const result = ref([]);
 
-  return { lastQuery };
+  return { lastQuery, result };
 });

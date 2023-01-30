@@ -45,6 +45,7 @@ import DatabaseService from '@/services/database.service';
 import SearchIcon from '@/components/icons/search-icon.vue';
 import { QUERY_TYPE } from '@/constants';
 import { BadFormatException } from '@/exceptions/bad-format.exception';
+import { userLogRequest } from '@/stores/query';
 const { t } = useI18n();
 
 const input = ref(null);
@@ -128,7 +129,8 @@ function queryLogs() {
       return parseQuery(keyValue);
     });
 
-    console.log(DatabaseService.find(queries));
+    const logRequest = userLogRequest();
+    logRequest.result = DatabaseService.find(queries);
   } catch (e) {
     if (e instanceof BadFormatException) {
       // TODO: display error message

@@ -5,8 +5,8 @@
  - [ ] add an input since
  - [x] import a json file
  - [ ] when we have entered a key display the possibilities (contains, equals, not equal, do not contains)
- - [ ] parse query (/("?[\w]+"?:-?["*][\w\d]+["*]\s?)+/) @in-progress
- - [ ] manage multiple autocompletion
+ - [x] parse query (/("?[\w]+"?:-?["*][\w\d]+["*]\s?)+/)
+ - [ ] manage multiple autocompletion @in-progress
  - [ ] Display a graph with the number of logs by timestamp
  - [ ] Add a button to clear query
  - [ ] Add the number of logs found
