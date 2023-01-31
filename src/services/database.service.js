@@ -37,12 +37,12 @@ class DatabaseService {
     if (typeof obj === 'object') {
       Object.keys(obj).forEach(objKey => {
         const key = parentKey !== null ? `${ parentKey }.${ objKey }` : objKey;
-        if (typeof obj[objKey] !== 'object' && !Array.isArray(obj[objKey])) {
+        if (typeof obj[objKey] === 'object' && Array.isArray(obj[objKey])) {
+          this.fillDatabaseKey(obj[objKey], key);
+        } else if (typeof obj[objKey] === 'object') {
           if (!this.databaseKeys.includes(key)) {
             this.databaseKeys.push(key);
           }
-        } else {
-          this.fillDatabaseKey(obj[objKey], key);
         }
       });
     } else if (Array.isArray(obj)) {

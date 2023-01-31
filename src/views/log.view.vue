@@ -22,7 +22,7 @@ import LogTable from '@/components/log-table.vue';
 const { t } = useI18n();
 
 const logStore = userLogRequest();
-const { result, lastQuery } = storeToRefs(logStore)
+const { result, lastQuery } = storeToRefs(logStore);
 </script>
 
 <style scoped>

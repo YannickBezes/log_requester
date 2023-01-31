@@ -46,6 +46,7 @@ import SearchIcon from '@/components/icons/search-icon.vue';
 import { QUERY_TYPE } from '@/constants';
 import { BadFormatException } from '@/exceptions/bad-format.exception';
 import { userLogRequest } from '@/stores/query';
+import { storeToRefs } from 'pinia';
 const { t } = useI18n();
 
 const input = ref(null);
@@ -132,9 +133,9 @@ function queryLogs() {
       return parseQuery(keyValue);
     });
 
-    const logRequest = userLogRequest();
-    logRequest.setLastQuery(queries.join(' '));
-    logRequest.result = DatabaseService.find(queries);
+    const { result, lastQuery} = storeToRefs(userLogRequest());
+    lastQuery.value = queries.join(' ');
+    result.value = DatabaseService.find(queries);
   } catch (e) {
     if (e instanceof BadFormatException) {
       // TODO: display error message
